@@ -6,16 +6,17 @@
   <title>Countertop Service Request | FLOFORM</title>
   <style>
     :root {
-      --primary: #1a5276;
-      --primary-light: #2980b9;
-      --accent: #e67e22;
-      --bg: #f4f6f8;
+      --primary: #2d2d2d;
+      --primary-light: #4a4a4a;
+      --accent: #5b7b2f;
+      --accent-hover: #4a6625;
+      --bg: #f5f6f3;
       --card: #ffffff;
-      --text: #2c3e50;
-      --text-light: #7f8c8d;
-      --border: #dce1e6;
-      --error: #e74c3c;
-      --success: #27ae60;
+      --text: #2d2d2d;
+      --text-light: #6b6b6b;
+      --border: #d6d9d0;
+      --error: #c0392b;
+      --success: #5b7b2f;
     }
 
     * {
@@ -32,10 +33,11 @@
     }
 
     header {
-      background: var(--primary);
-      color: white;
-      padding: 1.5rem 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      background: #ffffff;
+      color: var(--text);
+      padding: 1.25rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border-bottom: 3px solid var(--accent);
     }
 
     header .container {
@@ -44,15 +46,27 @@
       justify-content: space-between;
     }
 
+    header .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    header .logo-area img {
+      height: 48px;
+      width: auto;
+    }
+
     header h1 {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 700;
       letter-spacing: -0.5px;
+      color: var(--primary);
     }
 
     header p {
-      font-size: 0.9rem;
-      opacity: 0.85;
+      font-size: 0.85rem;
+      color: var(--text-light);
     }
 
     .container {
@@ -69,7 +83,7 @@
     .intro h2 {
       font-size: 1.6rem;
       margin-bottom: 0.5rem;
-      color: var(--primary);
+      color: var(--accent);
     }
 
     .intro p {
@@ -98,7 +112,7 @@
       width: 28px;
       height: 28px;
       border-radius: 50%;
-      background: var(--primary);
+      background: var(--accent);
       color: white;
       display: flex;
       align-items: center;
@@ -121,7 +135,7 @@
       margin-bottom: 1.25rem;
       padding-bottom: 0.75rem;
       border-bottom: 2px solid var(--bg);
-      color: var(--primary);
+      color: var(--accent);
     }
 
     .form-row {
@@ -164,8 +178,8 @@
 
     input:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: var(--primary-light);
-      box-shadow: 0 0 0 3px rgba(41,128,185,0.12);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(91,123,47,0.15);
     }
 
     input.invalid, select.invalid, textarea.invalid {
@@ -178,8 +192,8 @@
     }
 
     .photo-tip {
-      background: #fef9e7;
-      border: 1px solid #f9e79f;
+      background: #f0f4ea;
+      border: 1px solid #c5d4a8;
       border-radius: 8px;
       padding: 1rem 1.25rem;
       margin-bottom: 1.25rem;
@@ -196,11 +210,11 @@
 
     .photo-tip p {
       font-size: 0.85rem;
-      color: #7d6608;
+      color: #3d5a1a;
     }
 
     .photo-tip strong {
-      color: #5a4a06;
+      color: #2d4512;
     }
 
     .photo-checklist {
@@ -241,7 +255,7 @@
     }
 
     .btn-submit:hover {
-      background: #d35400;
+      background: var(--accent-hover);
     }
 
     .btn-submit:active {
@@ -303,9 +317,12 @@
 
 <header>
   <div class="container">
-    <div>
-      <h1>FLOFORM Countertop Service</h1>
-      <p>Service Request Form</p>
+    <div class="logo-area">
+      <img src="https://floform.com/wp-content/uploads/2023/05/FloForm_logo.png" alt="FloForm - Countertops for Life">
+      <div>
+        <h1>Countertop Service</h1>
+        <p>Service Request Form</p>
+      </div>
     </div>
   </div>
 </header>
