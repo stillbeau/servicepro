@@ -82,7 +82,7 @@ export default async (req) => {
   const emailPayload = {
     sender: {
       name: 'FloForm Service Request',
-      email: 'noreply@floform.com',
+      email: 'sam@sccountertops.ca',
     },
     to: [
       { email: 'sbeaumont@floform.com', name: 'FloForm Service Team' },
