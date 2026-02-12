@@ -191,6 +191,7 @@
       min-height: 100px;
     }
 
+    /* Photo upload styles */
     .photo-tip {
       background: #f0f4ea;
       border: 1px solid #c5d4a8;
@@ -217,31 +218,111 @@
       color: #2d4512;
     }
 
-    .photo-checklist {
-      list-style: none;
-      margin-top: 0.5rem;
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 10px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 1rem;
     }
 
-    .photo-checklist li {
-      padding: 0.3rem 0;
-      font-size: 0.85rem;
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--accent);
+      background: #f0f4ea;
+    }
+
+    .upload-area .upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .upload-area p {
+      font-size: 0.9rem;
       color: var(--text-light);
     }
 
-    .photo-checklist li::before {
-      content: "\2713";
-      color: var(--success);
-      font-weight: 700;
-      margin-right: 0.5rem;
+    .upload-area p strong {
+      color: var(--accent);
+      text-decoration: underline;
+      cursor: pointer;
     }
 
+    .upload-area .upload-hint {
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: 0.35rem;
+    }
+
+    .photo-previews {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .photo-preview {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 4 / 3;
+      background: var(--bg);
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-preview .remove-photo {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .photo-preview .remove-photo:hover {
+      background: var(--error);
+    }
+
+    .photo-preview .photo-name {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-size: 0.7rem;
+      padding: 3px 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Submit and status styles */
     .submit-section {
       text-align: center;
       padding: 0.5rem 0 2.5rem;
     }
 
     .btn-submit {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
       background: var(--accent);
       color: white;
       border: none;
@@ -252,6 +333,7 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
       font-family: inherit;
+      min-width: 220px;
     }
 
     .btn-submit:hover {
@@ -265,6 +347,24 @@
     .btn-submit:disabled {
       background: #bdc3c7;
       cursor: not-allowed;
+    }
+
+    .btn-submit .spinner {
+      display: none;
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .btn-submit.loading .spinner {
+      display: inline-block;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
 
     .submit-note {
@@ -282,6 +382,45 @@
 
     .error-msg.show {
       display: block;
+    }
+
+    .form-status {
+      display: none;
+      padding: 1.25rem 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .form-status.success {
+      display: block;
+      background: #f0f4ea;
+      border: 1px solid #c5d4a8;
+      color: #3d5a1a;
+    }
+
+    .form-status.error {
+      display: block;
+      background: #fdf0ef;
+      border: 1px solid #f0b8b1;
+      color: #8b2019;
+    }
+
+    .form-status h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .form-status.success h3 {
+      color: var(--accent);
+    }
+
+    .form-status.error h3 {
+      color: var(--error);
+    }
+
+    .form-status p {
+      font-size: 0.9rem;
     }
 
     footer {
@@ -310,6 +449,10 @@
       header h1 {
         font-size: 1.25rem;
       }
+
+      .photo-previews {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
     }
   </style>
 </head>
@@ -334,10 +477,13 @@
   </div>
 
   <div class="steps">
-    <div class="step"><span class="step-num">1</span> Fill out the form</div>
-    <div class="step"><span class="step-num">2</span> Review the email</div>
-    <div class="step"><span class="step-num">3</span> Attach 3 photos &amp; send</div>
+    <div class="step"><span class="step-num">1</span> Fill out details</div>
+    <div class="step"><span class="step-num">2</span> Upload photos</div>
+    <div class="step"><span class="step-num">3</span> Submit request</div>
   </div>
+
+  <!-- Success / Error messages -->
+  <div id="formStatus" class="form-status"></div>
 
   <form id="serviceForm" novalidate>
 
@@ -430,27 +576,32 @@
       </div>
     </div>
 
-    <!-- Photo Instructions -->
+    <!-- Photo Upload -->
     <div class="card">
-      <h3>Photo Instructions</h3>
+      <h3>Upload Photos <span class="required">*</span></h3>
       <div class="photo-tip">
         <span class="icon">&#128247;</span>
         <div>
-          <p><strong>Important: Please place a coin next to the damage in at least one photo.</strong> This helps us accurately assess the size and scale of the issue.</p>
+          <p><strong>Tip: Place a coin next to the damage in at least one photo.</strong> This helps us accurately assess the size and scale of the issue.</p>
         </div>
       </div>
-      <p style="font-size:0.9rem; margin-bottom:0.75rem; color:var(--text);">When your email opens, please <strong>attach 3 photos</strong>:</p>
-      <ul class="photo-checklist">
-        <li>A close-up of the damage/issue <strong>with a coin for scale</strong></li>
-        <li>A wider shot showing the surrounding area</li>
-        <li>An overall photo of the full countertop</li>
-      </ul>
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">&#128206;</div>
+        <p><strong>Click to upload</strong> or drag and drop</p>
+        <p class="upload-hint">Up to 3 photos (JPG, PNG) &middot; Max 10 MB each</p>
+        <input type="file" id="photoInput" accept="image/jpeg,image/png,image/webp,image/heic" multiple hidden>
+      </div>
+      <div class="error-msg" id="photoError">Please upload at least one photo.</div>
+      <div class="photo-previews" id="photoPreviews"></div>
     </div>
 
     <!-- Submit -->
     <div class="submit-section">
-      <button type="submit" class="btn-submit">Open Email &amp; Send Request</button>
-      <p class="submit-note">Your default email app will open with everything pre-filled.<br>Just attach your 3 photos and hit send.</p>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="spinner"></span>
+        <span class="btn-text">Submit Service Request</span>
+      </button>
+      <p class="submit-note">Your request and photos will be sent directly to our service team.</p>
     </div>
 
   </form>
@@ -464,7 +615,134 @@
 
 <script>
   const form = document.getElementById('serviceForm');
+  const uploadArea = document.getElementById('uploadArea');
+  const photoInput = document.getElementById('photoInput');
+  const photoPreviews = document.getElementById('photoPreviews');
+  const photoError = document.getElementById('photoError');
+  const submitBtn = document.getElementById('submitBtn');
+  const formStatus = document.getElementById('formStatus');
 
+  const MAX_PHOTOS = 3;
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+  const RESIZE_MAX_DIM = 1600;
+  const JPEG_QUALITY = 0.8;
+
+  let uploadedPhotos = []; // { file, dataUrl, resizedBase64, name }
+
+  // --- Upload area interactions ---
+  uploadArea.addEventListener('click', () => photoInput.click());
+
+  uploadArea.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadArea.classList.add('dragover');
+  });
+
+  uploadArea.addEventListener('dragleave', () => {
+    uploadArea.classList.remove('dragover');
+  });
+
+  uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  photoInput.addEventListener('change', () => {
+    handleFiles(photoInput.files);
+    photoInput.value = '';
+  });
+
+  function handleFiles(fileList) {
+    const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+
+    for (const file of files) {
+      if (uploadedPhotos.length >= MAX_PHOTOS) break;
+      if (file.size > MAX_FILE_SIZE) {
+        alert(`"${file.name}" exceeds 10 MB and was skipped.`);
+        continue;
+      }
+      processImage(file);
+    }
+
+    photoError.classList.remove('show');
+  }
+
+  function processImage(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const resizedBase64 = resizeImage(img, file.type);
+        const photo = {
+          name: file.name,
+          dataUrl: e.target.result,
+          resizedBase64: resizedBase64,
+        };
+        uploadedPhotos.push(photo);
+        renderPreviews();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function resizeImage(img, mimeType) {
+    const canvas = document.createElement('canvas');
+    let { width, height } = img;
+
+    if (width > RESIZE_MAX_DIM || height > RESIZE_MAX_DIM) {
+      if (width > height) {
+        height = Math.round(height * RESIZE_MAX_DIM / width);
+        width = RESIZE_MAX_DIM;
+      } else {
+        width = Math.round(width * RESIZE_MAX_DIM / height);
+        height = RESIZE_MAX_DIM;
+      }
+    }
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // Always output as JPEG for consistent size
+    const dataUrl = canvas.toDataURL('image/jpeg', JPEG_QUALITY);
+    // Return just the base64 portion (strip data:image/jpeg;base64,)
+    return dataUrl.split(',')[1];
+  }
+
+  function renderPreviews() {
+    photoPreviews.innerHTML = '';
+
+    uploadedPhotos.forEach((photo, index) => {
+      const div = document.createElement('div');
+      div.className = 'photo-preview';
+      div.innerHTML = `
+        <img src="${photo.dataUrl}" alt="${photo.name}">
+        <button type="button" class="remove-photo" data-index="${index}">&times;</button>
+        <div class="photo-name">${photo.name}</div>
+      `;
+      photoPreviews.appendChild(div);
+    });
+
+    // Update upload area visibility
+    if (uploadedPhotos.length >= MAX_PHOTOS) {
+      uploadArea.style.display = 'none';
+    } else {
+      uploadArea.style.display = '';
+    }
+  }
+
+  photoPreviews.addEventListener('click', (e) => {
+    const btn = e.target.closest('.remove-photo');
+    if (!btn) return;
+    const index = parseInt(btn.dataset.index, 10);
+    uploadedPhotos.splice(index, 1);
+    renderPreviews();
+  });
+
+  // --- Field validation ---
   function validateField(field) {
     const errorMsg = field.parentElement.querySelector('.error-msg');
     let valid = true;
@@ -491,7 +769,6 @@
     return valid;
   }
 
-  // Live validation on blur
   form.querySelectorAll('input, select, textarea').forEach(field => {
     field.addEventListener('blur', () => validateField(field));
     field.addEventListener('input', () => {
@@ -501,77 +778,89 @@
     });
   });
 
-  form.addEventListener('submit', function(e) {
+  // --- Form submission ---
+  form.addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Validate all required fields
+    // Validate fields
     const requiredFields = form.querySelectorAll('[required]');
     let allValid = true;
 
     requiredFields.forEach(field => {
-      if (!validateField(field)) {
-        allValid = false;
-      }
+      if (!validateField(field)) allValid = false;
     });
 
+    // Validate photos
+    if (uploadedPhotos.length === 0) {
+      photoError.classList.add('show');
+      allValid = false;
+    }
+
     if (!allValid) {
-      const firstInvalid = form.querySelector('.invalid');
+      const firstInvalid = form.querySelector('.invalid') || (uploadedPhotos.length === 0 ? uploadArea : null);
       if (firstInvalid) {
         firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        firstInvalid.focus();
       }
       return;
     }
 
-    // Gather values
-    const firstName = document.getElementById('firstName').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const requestType = document.getElementById('requestType').value;
-    const material = document.getElementById('material').value;
-    const installDate = document.getElementById('installDate').value.trim();
-    const urgency = document.getElementById('urgency').value;
-    const description = document.getElementById('description').value.trim();
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+    submitBtn.querySelector('.btn-text').textContent = 'Sending...';
+    formStatus.className = 'form-status';
+    formStatus.style.display = 'none';
 
-    // Build subject
-    const subject = `Service Request: ${requestType} - ${firstName} ${lastName}`;
+    const payload = {
+      firstName: document.getElementById('firstName').value.trim(),
+      lastName: document.getElementById('lastName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      address: document.getElementById('address').value.trim(),
+      requestType: document.getElementById('requestType').value,
+      material: document.getElementById('material').value,
+      installDate: document.getElementById('installDate').value.trim(),
+      urgency: document.getElementById('urgency').value,
+      description: document.getElementById('description').value.trim(),
+      photos: uploadedPhotos.map(p => ({
+        name: p.name.replace(/\.[^.]+$/, '') + '.jpg',
+        content: p.resizedBase64,
+      })),
+    };
 
-    // Build body
-    const body = [
-      `COUNTERTOP SERVICE REQUEST`,
-      `${'='.repeat(35)}`,
-      ``,
-      `CONTACT INFORMATION`,
-      `Name: ${firstName} ${lastName}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      `Service Address: ${address}`,
-      ``,
-      `SERVICE DETAILS`,
-      `Request Type: ${requestType}`,
-      `Countertop Material: ${material}`,
-      `Approximate Install Date: ${installDate || 'Not provided'}`,
-      `Urgency: ${urgency}`,
-      ``,
-      `DESCRIPTION OF ISSUE`,
-      `${description}`,
-      ``,
-      `${'='.repeat(35)}`,
-      ``,
-      `** REMINDER: Please attach 3 photos before sending: **`,
-      `  1. Close-up of the damage WITH A COIN for scale`,
-      `  2. Wider shot showing the surrounding area`,
-      `  3. Overall photo of the full countertop`,
-    ].join('\n');
+    try {
+      const res = await fetch('/.netlify/functions/send-service-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    // Build mailto
-    const mailto = `mailto:sbeaumont@floform.com`
-      + `?subject=${encodeURIComponent(subject)}`
-      + `&body=${encodeURIComponent(body)}`;
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || 'Something went wrong. Please try again.');
+      }
 
-    window.location.href = mailto;
+      // Success
+      form.style.display = 'none';
+      formStatus.className = 'form-status success';
+      formStatus.innerHTML = `
+        <h3>Request Submitted Successfully</h3>
+        <p>Thank you! Our service team has received your request and photos. We'll be in touch within 1-2 business days.</p>
+      `;
+      formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    } catch (err) {
+      formStatus.className = 'form-status error';
+      formStatus.innerHTML = `
+        <h3>Submission Failed</h3>
+        <p>${err.message}</p>
+      `;
+      formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('.btn-text').textContent = 'Submit Service Request';
+    }
   });
 </script>
 
