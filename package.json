@@ -1,0 +1,7 @@
+{
+  "name": "servicepro",
+  "private": true,
+  "dependencies": {
+    "pdfkit": "^0.15.2"
+  }
+}
