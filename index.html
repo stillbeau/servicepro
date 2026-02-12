@@ -815,7 +815,7 @@
     submitBtn.classList.add('loading');
     submitBtn.querySelector('.btn-text').textContent = 'Sending...';
     formStatus.className = 'form-status';
-    formStatus.style.display = 'none';
+    formStatus.removeAttribute('style');
 
     const payload = {
       firstName: document.getElementById('firstName').value.trim(),
