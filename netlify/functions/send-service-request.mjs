@@ -212,7 +212,11 @@ export default async (req) => {
       email: 'sam@sccountertops.ca',
     },
     to: [
-      { email: 'sbeaumont@floform.com', name: 'FloForm Service Team' },
+      { email: 'ccederholm@floform.com', name: 'Craig Cederholm' },
+      { email: 'rmclean@floform.com', name: 'Renee McLean' },
+    ],
+    cc: [
+      { email: 'sbeaumont@floform.com', name: 'Sam Beaumont' },
     ],
     replyTo: {
       email: data.email,
