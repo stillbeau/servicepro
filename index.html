@@ -842,8 +842,10 @@
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error || 'Something went wrong. Please try again.');
+        const errText = await res.text().catch(() => '');
+        let errMsg = `Status ${res.status}`;
+        try { errMsg += ': ' + JSON.parse(errText).error; } catch { errMsg += ': ' + (errText || 'No response body'); }
+        throw new Error(errMsg);
       }
 
       // Success – show "Sent" then fade button out
