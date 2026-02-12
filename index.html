@@ -331,9 +331,15 @@
       font-weight: 700;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
+      transition: background 0.3s, transform 0.1s, opacity 0.8s ease;
       font-family: inherit;
       min-width: 220px;
+    }
+
+    .btn-submit.sent {
+      background: #27ae60;
+      opacity: 0;
+      pointer-events: none;
     }
 
     .btn-submit:hover {
@@ -840,14 +846,21 @@
         throw new Error(err.error || 'Something went wrong. Please try again.');
       }
 
-      // Success
-      form.style.display = 'none';
-      formStatus.className = 'form-status success';
-      formStatus.innerHTML = `
-        <h3>Request Submitted Successfully</h3>
-        <p>Thank you! Our service team has received your request and photos. We'll be in touch within 1-2 business days.</p>
-      `;
-      formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Success – show "Sent" then fade button out
+      submitBtn.classList.remove('loading');
+      submitBtn.querySelector('.btn-text').textContent = 'Sent';
+      submitBtn.classList.add('sent');
+
+      // Wait for the fade-out transition, then show success message
+      setTimeout(() => {
+        form.style.display = 'none';
+        formStatus.className = 'form-status success';
+        formStatus.innerHTML = `
+          <h3>Request Submitted Successfully</h3>
+          <p>Thank you! Our service team has received your request and photos. We'll be in touch within 1-2 business days.</p>
+        `;
+        formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 900);
 
     } catch (err) {
       formStatus.className = 'form-status error';
